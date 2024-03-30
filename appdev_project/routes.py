@@ -5,6 +5,7 @@ from appdev_project.forms import (
     LoginForm,
     AdminLoginForm,
     AddBookForm,
+    AddSectionForm,
 )
 from appdev_project.models import Admin, Books, Section, User
 from flask_login import login_user, current_user, logout_user, login_required
@@ -134,11 +135,37 @@ def view_books():
     return render_template("view_books.html", Books=books)
 
 
-# @app.route('/add_books', methods=['GET', 'POST'])
-# def add_books():
-
 
 @app.route("/browse_books")
 def browse_books():
     books = Books.query.all()
     return render_template("browse_books.html", Books=books)
+
+
+@app.route("/add_section", methods=["GET", "POST"])
+def add_section():
+    form = AddSectionForm()
+    if form.validate_on_submit():
+        new_section = Section(
+            name=form.section_name.data, description=form.section_description.data
+        )
+        print(form.section_name.data)
+        print(form.section_description.data)
+
+        # Add the new section to the database session and commit the transaction
+        db.session.add(new_section)
+        db.session.commit()
+        print(new_section)  # Print the new section object
+
+
+        # Optionally, you can redirect the user to another page or display a success message
+        flash("The section has been added successfully!", "success")
+        return redirect(url_for("view_section"))
+    else:
+        return render_template("add_section.html",form=form)
+    
+
+@app.route("/view_section", methods=["GET", "POST"])
+def view_section():
+    section = Section.query.all()
+    return render_template("view_section.html", Section=section)

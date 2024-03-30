@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '1da104351ce04785a9a58c6e81021b73b41046579f685f47a3915ac32ec6c9c9'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + \
-    os.path.join(current_dir, "Database_Bootcamp.sqlite3")
+    os.path.join(current_dir, "Database_Bootcamp.db")
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)

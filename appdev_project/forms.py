@@ -48,3 +48,8 @@ class AddBookForm(FlaskForm):
     author = StringField('Author', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
     submit = SubmitField('Add Book')
+
+class AddSectionForm(FlaskForm):
+    section_name = StringField('Genre', validators=[DataRequired()])
+    section_description = StringField('Description', validators=[DataRequired()])
+    submit = SubmitField('Add Section')

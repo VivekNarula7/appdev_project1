@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container-fluid bg-light py-5">
+    <h1 class="mt-5 mb-4 text-center">View Sections</h1>
+    <div class="row justify-content-center">
+        {% for section in Section %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{{ section.name }}</h2>
+                    <p class="card-text">Description: {{ section.description }}</p>
+                    <div class="text-center">
+                        <a href="{{ url_for('add_books') }}" class="btn btn-primary">Add Books</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

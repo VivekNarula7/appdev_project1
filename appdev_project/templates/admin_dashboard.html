@@ -1,35 +1,39 @@
 <!-- admin_dashboard.html -->
-
 {% extends "layout.html" %}
 
 {% block content %}
 <div class="container mt-5">
-    <h2>Welcome to Admin Dashboard</h2>
-    <div class="row">
+    <h2 class="text-center mb-4">Welcome to Admin Dashboard</h2>
+    <div class="row justify-content-center">
         <div class="col-md-4">
-            <div class="card">
+            <div class="card shadow h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Users</h5>
-                    <p class="card-text">View and manage user data.</p>
-                    <a href="#" class="btn btn-primary">View Users</a>
+                    <h5 class="card-title text-center">Users</h5>
+                    <p class="card-text text-center">View and manage user data.</p>
+                    <a href="#" class="btn btn-primary btn-block">View Users</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card shadow h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Books</h5>
-                    <p class="card-text">View and manage book data.</p>
-                    <a href="{{ url_for('view_books')}}" class="btn btn-primary">View Books</a>
+                    <h5 class="card-title text-center">Books</h5>
+                    <p class="card-text text-center">View and manage book data.</p>
+                    <a href="{{ url_for('view_books')}}" class="btn btn-primary btn-block">View Books</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card">
+            <div class="card shadow h-100">
                 <div class="card-body">
-                    <h5 class="card-title">Sections</h5>
-                    <p class="card-text">View and manage section data.</p>
-                    <a href="#" class="btn btn-primary">View Sections</a>
+                    <h5 class="card-title text-center">Sections</h5>
+                    <p class="card-text text-center">View and manage section data.</p>
+                    <div class="text-center">
+                        <a href="{{ url_for('view_section') }}" class="btn btn-primary mb-2">View Sections</a>
+                    </div>
+                    <div class="text-center">
+                        <a href="{{ url_for('add_section') }}" class="btn btn-primary">Add Sections</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -60,3 +60,6 @@ footer {
     border-radius: 0.25rem; /* Rounded corners */
 }
 
+.container-fluid {
+    background-color: #f8f9fa; /* Light grayish tone */
+}

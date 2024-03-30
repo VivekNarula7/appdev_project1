@@ -46,7 +46,7 @@ class Books(db.Model):
         return f"Book(id={self.id}, book_name='{self.book_name}')"
 
 
-class Section(db.Model):
+class Section(db.Model): # this servers like genre
     __tablename__ = "Section"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
