@@ -33,14 +33,14 @@ class User(db.Model, UserMixin):
 class Books(db.Model):
     __tablename__ = "Books"
     id = db.Column(db.Integer, primary_key=True)
-    book_name = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    date_issued = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    authors = db.Column(db.String(100), nullable=False)
-    return_date = db.Column(db.DateTime, nullable=True)
-    rating = db.Column(db.Integer, nullable = False)
-    section_id = db.Column(db.Integer, db.ForeignKey("Section.id"), nullable=False)
-    section = db.relationship("Section", backref=db.backref("books", lazy=True))
+    book_name = db.Column(db.String(100))
+    content = db.Column(db.Text)
+    # date_issued = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)  # Ensure date_issued cannot be NULL
+    authors = db.Column(db.String(100))
+    # return_date = db.Column(db.DateTime, nullable=True)  # Allow return_date to be NULL
+    rating = db.Column(db.Integer)
+    # section_id = db.Column(db.Integer, db.ForeignKey("Section.id"))
+    # section = db.relationship("Section", backref=db.backref("books", lazy=True))
 
     def __repr__(self):
         return f"Book(id={self.id}, book_name='{self.book_name}')"

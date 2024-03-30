@@ -49,3 +49,14 @@ footer {
     padding: 20px 0;
     text-align: center;
 }
+
+/* main.css */
+.alert-error {
+    background-color: #f8d7da; /* Light red background */
+    border: 1px solid #f5c6cb; /* Red border */
+    color: #000000; /* Dark red text */
+    padding: 0.75rem 1.25rem; /* Padding for better spacing */
+    margin-bottom: 1rem; /* Bottom margin to separate messages */
+    border-radius: 0.25rem; /* Rounded corners */
+}
+

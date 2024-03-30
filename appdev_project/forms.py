@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from appdev_project.models import User
 
@@ -42,3 +42,9 @@ class AdminLoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
     remember = BooleanField('Remember Me')
+
+class AddBookForm(FlaskForm):
+    book_name = StringField('Book Name', validators=[DataRequired()])
+    author = StringField('Author', validators=[DataRequired()])
+    rating = IntegerField('Rating', validators=[DataRequired()])
+    submit = SubmitField('Add Book')

@@ -1,0 +1,25 @@
+<!-- add_books.html -->
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-5 mb-4">Add New Book</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            <label for="book_name">Book Name:</label>
+            {{ form.book_name(class="form-control", id="book_name") }}
+        </div>
+        <div class="form-group">
+            <label for="author">Author:</label>
+            {{ form.author(class="form-control", id="author") }}
+        </div>
+        <div class="form-group">
+            <label for="rating">Rating:</label>
+            {{ form.rating(class="form-control", id="rating") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
+</div>
+{% endblock %}
+    
