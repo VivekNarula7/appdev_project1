@@ -1,0 +1,35 @@
+<!-- user_dashboard.html -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Welcome to User Dashboard</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <img src="{{ url_for('static', filename='images/book1.jpg') }}" class="card-img-top" alt="Ebooks Image">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Ebooks</h5>
+                    <p class="card-text text-center">Browse and explore our collection of ebooks.</p>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary">View Ebooks</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow">
+                <img src="{{ url_for('static', filename='images/book2.jpg') }}" class="card-img-top" alt="Sections Image">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Sections</h5>
+                    <p class="card-text text-center">Explore different sections of our library.</p>
+                    <div class="text-center">
+                        <a href="#" class="btn btn-primary">View Sections</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
