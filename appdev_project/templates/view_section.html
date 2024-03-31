@@ -11,7 +11,7 @@
                     <h2 class="card-title text-center">{{ section.name }}</h2>
                     <p class="card-text">Description: {{ section.description }}</p>
                     <div class="text-center">
-                        <a href="{{ url_for('add_books') }}" class="btn btn-primary">Add Books</a>
+                        <a href="{{ url_for('add_books', section_id=section.id) }}" class="btn btn-primary">Add Books</a>
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from appdev_project.models import User
 
@@ -47,6 +47,7 @@ class AddBookForm(FlaskForm):
     book_name = StringField('Book Name', validators=[DataRequired()])
     author = StringField('Author', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
+    section_id = SelectField('Section', coerce=int, choices=[], validators=[DataRequired()])
     submit = SubmitField('Add Book')
 
 class AddSectionForm(FlaskForm):

@@ -85,27 +85,50 @@ def book_exists(book_name, author):
     return existing_book is not None
 
 
+from flask import request
+
 @app.route("/add_books", methods=["GET", "POST"])
 def add_books():
     form = AddBookForm()
+
+    # Get the section_id from the URL parameter
+    section_id = request.args.get('section_id')
+
+    if section_id is None:
+        flash("No section specified for adding books!", "error")
+        return redirect(url_for("view_sections"))
+
+    # Get all sections
+    sections = Section.query.all()
+
+    # Prepare choices for the dropdown
+    section_choices = [(section.id, section.name) for section in sections]
+    form.section_id.choices = section_choices
+
+    # Set the selected section if provided (optional)
+    if section_id:
+        form.section_id.data = int(section_id)
+
     if form.validate_on_submit():
         # Check if the book already exists
         if book_exists(form.book_name.data, form.author.data):
             flash("This book already exists!", "error")
         else:
-            # Add the book to the database
+            # Add the book to the database and associate it with the specified section
             book = Books(
                 book_name=form.book_name.data,
                 authors=form.author.data,
                 rating=form.rating.data,
+                section_id=section_id
             )
             db.session.add(book)
             db.session.commit()
             flash("Hi Admin. This book has been added successfully!", "success")
-            return redirect(
-                url_for("view_books")
-            )  # Redirect to the view_books page after adding the book
+            return redirect(url_for("view_section"))  # Redirect to the view_sections page after adding the book
+
     return render_template("add_books.html", form=form)
+
+
 
 
 @app.route("/admin_dashboard")
@@ -132,7 +155,7 @@ def view_books():
     # Filter out books with empty date_issued
 
     # Pass the filtered books data to the template
-    return render_template("view_books.html", Books=books)
+    return render_template("view_books.html", books=books)
 
 
 
@@ -155,7 +178,6 @@ def add_section():
         # Add the new section to the database session and commit the transaction
         db.session.add(new_section)
         db.session.commit()
-        print(new_section)  # Print the new section object
 
 
         # Optionally, you can redirect the user to another page or display a success message

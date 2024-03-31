@@ -39,8 +39,8 @@ class Books(db.Model):
     authors = db.Column(db.String(100))
     # return_date = db.Column(db.DateTime, nullable=True)  # Allow return_date to be NULL
     rating = db.Column(db.Integer)
-    # section_id = db.Column(db.Integer, db.ForeignKey("Section.id"))
-    # section = db.relationship("Section", backref=db.backref("books", lazy=True))
+    section_id = db.Column(db.Integer, db.ForeignKey("Section.id"))
+    section = db.relationship("Section", backref=db.backref("Books", lazy=True))
 
     def __repr__(self):
         return f"Book(id={self.id}, book_name='{self.book_name}')"
