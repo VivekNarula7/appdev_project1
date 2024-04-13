@@ -1,0 +1,16 @@
+<!-- In your book.html template -->
+
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5 mb-4">{{ book.book_name }}</h1>
+        <h3>{{ book.authors }}</h3>
+        <h4>Rating: <span style="font-weight: bold; color: #388e3c;">{{ book.rating }}</span></h4>
+        <img src="{{ book.link }}" class="img-fluid" alt="{{ book.book_name }}">
+        <p>{{ book.description }}</p>
+        <hr>
+        <h2>Content:</h2>
+        <p>{{ book.content }}</p>
+    </div>
+{% endblock %}

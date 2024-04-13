@@ -28,15 +28,16 @@ app.app_context().push()
 from appdev_project import routes
 from appdev_project.models import User, Books, Section
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.form import Select2Widget
 
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Section, db.session))
 
+from flask_admin.form import Select2Widget
+
 
 class CustomAdminView(ModelView):
-    form_columns = ('book_name', 'content', 'authors', 'rating', 'section')
-    column_list = ["book_name", "content", "authors", "rating", "section_name"]
+    form_columns = ('book_name', 'content', 'authors', 'rating', 'section', 'link')
+    column_list = ["book_name", "content", "authors", "rating", "section_name", 'link']
     # Optionally, you can customize the form field for the section selection
     form_widget_args = {
         'section': {
@@ -45,14 +46,13 @@ class CustomAdminView(ModelView):
     }
 
     def on_model_change(self, form, model, is_created):
-        # Check if it's a new book being added
-        if is_created:
-            # Check if the book already exists
+        if is_created:  # Check if it's a new book being added
+            # Check if a book with the same name and author already exists
             existing_book = model.query.filter_by(book_name=model.book_name, authors=model.authors).first()
-            if existing_book:
-                raise ValidationError("This book already exists!")
-        # Call the parent on_model_change method to continue processing
-        return super().on_model_change(form, model, is_created)
+            if existing_book and existing_book.id != model.id:
+                raise ValidationError("A book with the same name and author already exists!")
+        super().on_model_change(form, model, is_created)
 
 
+# Register the custom admin view
 admin.add_view(CustomAdminView(Books, db.session))

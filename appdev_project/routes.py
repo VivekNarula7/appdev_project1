@@ -71,7 +71,7 @@ def user_dashboard():
 
 @app.route("/browse-books")
 def browse_books():
-    hooks = Books.query.all()
+    books = Books.query.all()
     return render_template("browse_books.html", books=books)
 
 
@@ -135,3 +135,11 @@ def add_section():
 def view_section():
     section = Section.query.all()
     return render_template("view_section.html", Section=section)
+
+
+@app.route("/book/<int:book_id>")
+def book(book_id):
+    # Query the database for the selected book based on its ID
+    book = Books.query.get_or_404(book_id)
+    # Render the book page template and pass the book data to it
+    return render_template("book.html", book=book)

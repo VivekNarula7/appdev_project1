@@ -5,7 +5,7 @@ from flask_login import UserMixin
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(int(user_id))
 
 
 class Admin(UserMixin, db.Model):
@@ -40,9 +40,10 @@ class Books(db.Model):
     rating = db.Column(db.Integer)
     section_name = db.Column(db.String(100), db.ForeignKey("Section.name"))
     section = db.relationship("Section", back_populates="books")
+    link = db.Column(db.String(255))
 
     def __repr__(self):
-        return f"Book(id={self.id}, book_name='{self.book_name}')"
+        return f"Book(id={self.id}, book_name='{self.book_name}', authors='{self.authors}', rating={self.rating}, link='{self.link}')"
 
 
 class Section(db.Model):
@@ -55,4 +56,3 @@ class Section(db.Model):
 
     def __repr__(self):
         return f'{self.name}'
-
