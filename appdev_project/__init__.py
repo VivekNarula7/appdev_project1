@@ -25,7 +25,6 @@ login_manager.login_message_category = 'info'
 
 app.app_context().push()
 
-from appdev_project import routes
 from appdev_project.models import User, Books, Section
 from flask_admin.contrib.sqla import ModelView
 
@@ -56,3 +55,4 @@ class CustomAdminView(ModelView):
 
 # Register the custom admin view
 admin.add_view(CustomAdminView(Books, db.session))
+from appdev_project import routes
