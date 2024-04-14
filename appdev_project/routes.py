@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, url_for, flash, redirect, request, abort
 from appdev_project import app, db, bcrypt
 from appdev_project.forms import (
     RegistrationForm,
@@ -113,8 +113,6 @@ def book_exists(book_name, author):
     return existing_book is not None
 
 
-from flask import request
-
 @app.route("/add_books", methods=["GET", "POST"])
 def add_books():
     form = AddBookForm()
@@ -155,7 +153,6 @@ def add_books():
             return redirect(url_for("view_section"))  # Redirect to the view_sections page after adding the book
 
     return render_template("add_books.html", form=form)
-
 
 
 @app.route("/view_books")
@@ -229,3 +226,15 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
+
+
+@app.route("/view_pdf/<int:book_id>")
+def view_pdf(book_id):
+    # Retrieve the book from the database based on the book_id
+    book = Books.query.get(book_id)
+    if not book:
+        abort(404)  # Return 404 error if book not found
+
+    # Pass the PDF content path to the template
+    pdf_path = book.content  # Assuming book.content contains the path to the PDF file
+    return render_template("view_pdf.html", pdf_path=pdf_path)
