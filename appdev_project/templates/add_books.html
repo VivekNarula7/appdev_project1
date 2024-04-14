@@ -1,29 +1,35 @@
-<!-- add_books -->
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mt-5 mb-4">Add New Book</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            <label for="book_name">Book Name:</label>
-            {{ form.book_name(class="form-control", id="book_name") }}
-        </div>
-        <div class="form-group">
-            <label for="author">Author:</label>
-            {{ form.author(class="form-control", id="author") }}
-        </div>
-        <div class="form-group">
-            <label for="rating">Rating:</label>
-            {{ form.rating(class="form-control", id="rating") }}
-        </div>  
-        <div class="form-group" style="display: none;">
-            <label for="section_id">Section ID:</label>
-            {{ form.section_id(class="form-control", id="section_id") }}
-        </div>        
-        <button type="submit" class="btn btn-primary">Add Book</button>
-    </form>
-</div>
+    <div class="container">
+        <h1 class="mt-5 mb-4">Add New Book</h1>
+        <form method="POST" action="{{ url_for('add_books') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="book_name">Book Name:</label>
+                {{ form.book_name(class="form-control", id="book_name") }}
+            </div>
+            <div class="form-group">
+                <label for="author">Author:</label>
+                {{ form.author(class="form-control", id="author") }}
+            </div>
+            <div class="form-group">
+                <label for="rating">Rating:</label>
+                {{ form.rating(class="form-control", id="rating") }}
+            </div>
+            <div class="form-group">
+                <label for="content">Content:</label>
+                {{ form.content(class="form-control", id="content") }}
+            </div>
+            <div class="form-group">
+                <label for="link">Link:</label>
+                {{ form.link(class="form-control", id="link") }}
+            </div>
+            <div class="form-group">
+                <label for="section_id">Section:</label>
+                {{ form.section_id(class="form-control", id="section_id") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Add Book</button>
+        </form>
+    </div>
 {% endblock %}
-    

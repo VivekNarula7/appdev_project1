@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from appdev_project.models import User
@@ -11,12 +11,12 @@ from flask_login import current_user
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
-                            validators=[DataRequired(), Length(min=2, max=20)])
+                           validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
-                             validators=[DataRequired(), Email()])
+                        validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
-                                          validators=[DataRequired(), EqualTo('password')])
+                                     validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
     def validate_user_name(self, username):
@@ -51,7 +51,9 @@ class AddBookForm(FlaskForm):
     book_name = StringField('Book Name', validators=[DataRequired()])
     author = StringField('Author', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
-    section_id = SelectField('Section', coerce=int, choices=[], validators=[DataRequired()])
+    content = TextAreaField('Content')  # Add content field
+    link = StringField('Link')  # Add link field
+    section_id = SelectField('Section', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add Book')
 
 

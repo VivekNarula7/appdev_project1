@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, flash, redirect, request
-from appdev_project import app, db, bcrypt, admin
+from appdev_project import app, db, bcrypt
 from appdev_project.forms import (
     RegistrationForm,
     LoginForm,
@@ -10,10 +10,11 @@ from appdev_project.forms import (
 )
 from appdev_project.models import User, Books, Section, Admin
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager, UserMixin
-from flask_admin.contrib.sqla import ModelView
+# from flask_admin.contrib.sqla import ModelView
 from wtforms.validators import ValidationError
 import secrets, os
 from PIL import Image
+from flask_bcrypt import check_password_hash
 
 
 @app.route("/")
@@ -64,6 +65,7 @@ def login():
 
 
 @app.route("/user_dashboard")
+@login_required
 def user_dashboard():
     return render_template("user_dashboard.html")
 
@@ -80,27 +82,64 @@ def logout():
     return redirect(url_for("home"))
 
 
-@app.route("/admin_login", methods=["GET", "POST"])
+@app.route('/admin_login', methods=['GET', 'POST'])
 def admin_login():
-    if current_user.is_authenticated and current_user.is_admin:
-        return redirect(url_for("admin.index"))  # Redirect to the Flask-Admin dashboard
-    form = AdminLoginForm()
+    if current_user.is_authenticated:
+        # Redirect to admin dashboard if admin is already logged in
+        return redirect(url_for('admin_dashboard'))
+
+    form = AdminLoginForm()  # Assuming you have a form for admin login
     if form.validate_on_submit():
-        if form.email.data == "admin@blog.com" and form.password.data == "password":
-            # Assuming you're using Flask-Login for user management
-            admin_user = Admin.query.filter_by(admin_email=form.email.data).first()
-            flash("Welcome Admin. You have been logged in!", "success")
-            return redirect(url_for("admin.index"))  # Redirect to the Flask-Admin dashboard
+        admin = Admin.query.filter_by(admin_email=form.email.data).first()
+        if admin and admin.admin_password == form.password.data:
+            login_user(admin)  # Log in the admin user
+            flash('Logged in successfully.', 'success')
+            return redirect(url_for('admin_dashboard'))
         else:
-            flash("Login Unsuccessful. Please ensure that you are an admin.", "danger")
-    return render_template("admin_login.html", title="Admin Login", form=form)
+            flash('Invalid email or password.', 'danger')
+
+    return render_template('admin_login.html', form=form)
 
 
-@app.route('/admin_logout')
+@app.route("/admin_dashboard")
 @login_required
-def admin_logout():
-    logout_user()
-    return redirect(url_for('admin_login'))
+def admin_dashboard():
+    # Logic for rendering the admin dashboard page
+    return render_template("admin_dashboard.html")
+
+
+def book_exists(book_name, author):
+    existing_book = Books.query.filter_by(book_name=book_name, authors=author).first()
+    return existing_book is not None
+
+
+@app.route("/add_books", methods=["GET", "POST"])
+def add_books():
+    form = AddBookForm()
+
+    # Populate choices for section_id in the form
+    form.section_id.choices = [(section.id, section.name) for section in Section.query.all()]
+
+    if form.validate_on_submit():
+        # Check if the book already exists
+        if book_exists(form.book_name.data, form.author.data):
+            flash("This book already exists!", "error")
+        else:
+            # Add the book to the database
+            book = Books(
+                book_name=form.book_name.data,
+                authors=form.author.data,
+                rating=form.rating.data,
+                content=form.content.data,
+                link=form.link.data,
+                section_id=form.section_id.data  # Get section_id from the form
+            )
+            db.session.add(book)
+            db.session.commit()
+            flash("Hi Admin. This book has been added successfully!", "success")
+            return redirect(url_for("view_section"))  # Redirect to the view_sections page after adding the book
+
+    return render_template("add_books.html", form=form)
 
 
 @app.route("/view_books")
@@ -116,9 +155,6 @@ def add_section():
         new_section = Section(
             name=form.section_name.data, description=form.section_description.data
         )
-        print(form.section_name.data)
-        print(form.section_description.data)
-
         # Add the new section to the database session and commit the transaction
         db.session.add(new_section)
         db.session.commit()
