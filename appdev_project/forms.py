@@ -51,7 +51,7 @@ class AddBookForm(FlaskForm):
     book_name = StringField('Book Name', validators=[DataRequired()])
     author = StringField('Author', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
-    content = TextAreaField('Content')  # Add content field
+    content = FileField('PDF File', validators=[FileAllowed(['pdf'])])  # Add content field
     link = StringField('Link')  # Add link field
     section_id = SelectField('Section', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Add Book')

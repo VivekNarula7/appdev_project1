@@ -45,10 +45,8 @@ class Books(db.Model):
     __tablename__ = "Books"
     id = db.Column(db.Integer, primary_key=True)
     book_name = db.Column(db.String(100), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    # date_issued = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.String(255), nullable=True)  # stores the path to the pdf file
     authors = db.Column(db.String(100), nullable=False)
-    # return_date = db.Column(db.DateTime, nullable=True)
     rating = db.Column(db.Integer, nullable=False)
     section_id = db.Column(db.Integer, db.ForeignKey("Section.id"), nullable=False)
     section = db.relationship("Section", backref=db.backref("books", lazy=True))

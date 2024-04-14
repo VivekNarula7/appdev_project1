@@ -113,6 +113,8 @@ def book_exists(book_name, author):
     return existing_book is not None
 
 
+from flask import request
+
 @app.route("/add_books", methods=["GET", "POST"])
 def add_books():
     form = AddBookForm()
@@ -121,6 +123,19 @@ def add_books():
     form.section_id.choices = [(section.id, section.name) for section in Section.query.all()]
 
     if form.validate_on_submit():
+        # Initialize pdf_path_relative variable
+        pdf_path_relative = None
+
+        # Handle file upload
+        pdf_file = form.content.data
+        if pdf_file:
+            random_hex = secrets.token_hex(8)
+            _, f_ext = os.path.splitext(pdf_file.filename)
+            pdf_fn = random_hex + f_ext
+            pdf_path = os.path.join(app.root_path, 'static/books', pdf_fn)
+            pdf_file.save(pdf_path)
+            pdf_path_relative = os.path.join('books', pdf_fn)  # Relative path for storing in the database
+
         # Check if the book already exists
         if book_exists(form.book_name.data, form.author.data):
             flash("This book already exists!", "error")
@@ -130,7 +145,7 @@ def add_books():
                 book_name=form.book_name.data,
                 authors=form.author.data,
                 rating=form.rating.data,
-                content=form.content.data,
+                content=pdf_path_relative,  # Save the relative path to the PDF file if uploaded
                 link=form.link.data,
                 section_id=form.section_id.data  # Get section_id from the form
             )
@@ -140,6 +155,7 @@ def add_books():
             return redirect(url_for("view_section"))  # Redirect to the view_sections page after adding the book
 
     return render_template("add_books.html", form=form)
+
 
 
 @app.route("/view_books")
